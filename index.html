@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TV Landing Page</title>
+  <title>TV Landing Page Grid</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
@@ -16,18 +16,32 @@
       overflow: hidden;
     }
 
-    h1 {
-      text-align: center;
-      margin: 40px 0;
-      font-size: 3vw;
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
-    .container {
+    h1 {
+      font-size: 3vw;
+      margin-bottom: 40px;
+    }
+
+    .wrapper {
       display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3vw 3vw;
       justify-content: center;
       align-items: center;
-      gap: 5vw;
-      padding: 0 5vw;
     }
 
     .thumbnail {
@@ -45,16 +59,9 @@
       outline: none;
     }
 
-    .thumbnail:focus,
-    .thumbnail.hovered {
-      transform: scale(1.05);
-      border-color: #ccc;
-    }
-
     .thumbnail img {
       width: 100%;
       height: auto;
-      display: block;
       background-color: #fff;
     }
 
@@ -64,6 +71,11 @@
       background-color: #111;
       width: 100%;
       text-align: center;
+    }
+
+    .thumbnail.hovered {
+      transform: scale(1.03);
+      border-color: #c20f0f;
     }
 
     @media (max-width: 1280px) {
@@ -77,8 +89,8 @@
     }
 
     @media (max-width: 720px) {
-      .container {
-        flex-direction: column;
+      .grid {
+        grid-template-columns: 1fr;
       }
 
       .thumbnail {
@@ -94,22 +106,32 @@
 </head>
 <body>
 
-  <h1>Welcome to Senza TV Hub</h1>
+  <h1>Welcome to Senza Hub</h1>
 
-  <div class="container">
-    <a href="https://senzadev.net/hotel/index.html?theme=charter&size=720&redirect=https%3A%2F%2Fdevelop-desktop.tvsdk.spectrumflow.net%2F%3Fbuyflow.enabled%3Dtrue%26oAuth.autoAccess%3Dfalse%26oAuth.deviceType%3Dstva-ipstbxumo%26profile%3DvideoUpgrades%26f%3Dsynamediaguidetest%2FQwerty05" class="thumbnail" id="thumb1" tabindex="0">
-      <img src="images/hospitality_thumb1.png" alt="Thumbnail 1">
-      <div class="caption">Hospitality</div>
-    </a>
-
-    <a href="https://launcher.streaming.synamedia.com/redirect/charter-demo/latest/index.html" class="thumbnail" id="thumb2" tabindex="0">
-      <img src="images/DTA_thumb1.png" alt="Thumbnail 2">
-      <div class="caption">DTA</div>
-    </a>
+  <div class="wrapper">
+    <div class="grid" id="grid">
+      <a href="https://senzadev.net/hotel/index.html?theme=charter&size=720&redirect=https%3A%2F%2Fdevelop-desktop.tvsdk.spectrumflow.net%2F%3Fbuyflow.enabled%3Dtrue%26oAuth.autoAccess%3Dfalse%26oAuth.deviceType%3Dstva-ipstbxumo%26profile%3DvideoUpgrades%26f%3Dsynamediaguidetest%2FQwerty05" class="thumbnail" id="thumb0" tabindex="0">
+        <img src="images/hospitality_thumb1.png" alt="Channel 1">
+        <div class="caption">Hospitality</div>
+      </a>
+      <a href="https://launcher.streaming.synamedia.com/redirect/charter-demo/latest/index.html" class="thumbnail" id="thumb1" tabindex="0">
+        <img src="images/DTA_thumb1.png" alt="Channel 2">
+        <div class="caption">DTA</div>
+      </a>
+      <a href="https://develop-desktop.tvsdk.spectrumflow.net/?buyflow.enabled=true&oAuth.autoAccess=false&oAuth.deviceType=stva-ipstbxumo&profile=videoUpgrades&f=synamediaguidetest/Qwerty05" class="thumbnail" id="thumb2" tabindex="0">
+        <img src="images/Spectrum_thumb2.png" alt="Channel 3">
+        <div class="caption">Spectrum</div>
+      </a>
+      <a href="https://launcher.streaming.synamedia.com/redirect/senza-app/stable/index.html#category=senza?config=senza-app" class="thumbnail" id="thumb3" tabindex="0">
+        <img src="images/Senza_thumb1.png" alt="Channel 4">
+        <div class="caption">Senza</div>
+      </a>
+    </div>
   </div>
 
   <script>
-    const thumbnails = [document.getElementById('thumb1'), document.getElementById('thumb2')];
+    const thumbnails = Array.from(document.querySelectorAll(".thumbnail"));
+    const columns = 2;
     let focusedIndex = 0;
 
     function updateFocus() {
@@ -128,35 +150,39 @@
     }
 
     function escape() {
-      alert("Escape pressed. Implement back navigation here.");
+      alert("Escape pressed. Add back navigation here.");
     }
 
     function left() {
-      if (focusedIndex > 0) {
+      if (focusedIndex % columns > 0) {
         focusedIndex--;
         updateFocus();
       }
     }
 
     function right() {
-      if (focusedIndex < thumbnails.length - 1) {
+      if (focusedIndex % columns < columns - 1 && focusedIndex + 1 < thumbnails.length) {
         focusedIndex++;
         updateFocus();
       }
     }
 
     function up() {
-      // No vertical navigation needed in this layout
+      if (focusedIndex - columns >= 0) {
+        focusedIndex -= columns;
+        updateFocus();
+      }
     }
 
     function down() {
-      // No vertical navigation needed in this layout
+      if (focusedIndex + columns < thumbnails.length) {
+        focusedIndex += columns;
+        updateFocus();
+      }
     }
 
-    // Initial focus
     window.onload = updateFocus;
 
-    // Key event listener
     document.addEventListener("keydown", function(event) {
       switch (event.key) {
         case "Enter": enter(); break;
@@ -170,5 +196,6 @@
       event.preventDefault();
     });
   </script>
+
 </body>
 </html>
