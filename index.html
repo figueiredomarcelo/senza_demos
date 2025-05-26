@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TV Landing Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 40px 0;
+      font-size: 3vw;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5vw;
+      padding: 0 5vw;
+    }
+
+    .thumbnail {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #fff;
+      border: 4px solid #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 30vw;
+      max-width: 480px;
+      transition: transform 0.3s ease, border-color 0.3s;
+      outline: none;
+    }
+
+    .thumbnail:focus,
+    .thumbnail.hovered {
+      transform: scale(1.05);
+      border-color: #ccc;
+    }
+
+    .thumbnail img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background-color: #fff;
+    }
+
+    .caption {
+      padding: 20px;
+      font-size: 1.5vw;
+      background-color: #111;
+      width: 100%;
+      text-align: center;
+    }
+
+    @media (max-width: 1280px) {
+      .caption {
+        font-size: 2vw;
+      }
+
+      .thumbnail {
+        width: 40vw;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .thumbnail {
+        width: 80vw;
+        margin-bottom: 20px;
+      }
+
+      .caption {
+        font-size: 3vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to Senza TV Hub</h1>
+
+  <div class="container">
+    <a href="https://senzadev.net/hotel/index.html?theme=charter&size=720&redirect=https%3A%2F%2Fdevelop-desktop.tvsdk.spectrumflow.net%2F%3Fbuyflow.enabled%3Dtrue%26oAuth.autoAccess%3Dfalse%26oAuth.deviceType%3Dstva-ipstbxumo%26profile%3DvideoUpgrades%26f%3Dsynamediaguidetest%2FQwerty05" class="thumbnail" id="thumb1" tabindex="0">
+      <img src="images/hospitality_thumb1.png" alt="Thumbnail 1">
+      <div class="caption">Hospitality</div>
+    </a>
+
+    <a href="https://launcher.streaming.synamedia.com/redirect/charter-demo/latest/index.html" class="thumbnail" id="thumb2" tabindex="0">
+      <img src="images/DTA_thumb1.png" alt="Thumbnail 2">
+      <div class="caption">DTA</div>
+    </a>
+  </div>
+
+  <script>
+    const thumbnails = [document.getElementById('thumb1'), document.getElementById('thumb2')];
+    let focusedIndex = 0;
+
+    function updateFocus() {
+      thumbnails.forEach((thumb, index) => {
+        if (index === focusedIndex) {
+          thumb.focus();
+          thumb.classList.add("hovered");
+        } else {
+          thumb.classList.remove("hovered");
+        }
+      });
+    }
+
+    function enter() {
+      thumbnails[focusedIndex].click();
+    }
+
+    function escape() {
+      alert("Escape pressed. Implement back navigation here.");
+    }
+
+    function left() {
+      if (focusedIndex > 0) {
+        focusedIndex--;
+        updateFocus();
+      }
+    }
+
+    function right() {
+      if (focusedIndex < thumbnails.length - 1) {
+        focusedIndex++;
+        updateFocus();
+      }
+    }
+
+    function up() {
+      // No vertical navigation needed in this layout
+    }
+
+    function down() {
+      // No vertical navigation needed in this layout
+    }
+
+    // Initial focus
+    window.onload = updateFocus;
+
+    // Key event listener
+    document.addEventListener("keydown", function(event) {
+      switch (event.key) {
+        case "Enter": enter(); break;
+        case "Escape": escape(); break;
+        case "ArrowUp": up(); break;
+        case "ArrowDown": down(); break;
+        case "ArrowLeft": left(); break;
+        case "ArrowRight": right(); break;
+        default: return;
+      }
+      event.preventDefault();
+    });
+  </script>
+</body>
+</html>
